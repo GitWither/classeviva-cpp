@@ -29,9 +29,28 @@ void Classeviva::ClassevivaClient::Login() {
 		m_Token = response_data["token"].get<std::string>();
 		m_Name = response_data["firstName"].get<std::string>();
 		m_Surname = response_data["lastName"].get<std::string>();
+
+		std::string id = response_data["ident"].get<std::string>();
+		id.erase(0, 1).erase(id.end() - 1, id.end());
+		m_Id = std::stoi(id);
 	}
 }
 
+void Classeviva::ClassevivaClient::GetGrades() const {
+	httplib::Client client(Classeviva::BASE_URL);
+	httplib::Headers headers = {
+		{"User-Agent", "zorro/1.0"},
+		{"Z-Dev-Apikey", "+zorro+"},
+		{"Z-Auth-Token", m_Token},
+		{"Content-Type", "application/json"}
+	};
+	client.set_default_headers(headers);
+
+	std::string url = std::string("/rest/v1/students/") + std::to_string(m_Id) + std::string("/grades");
+	httplib::Result response = client.Get(url.c_str());
+
+	std::cout << response->body << std::endl;
+}
 
 const char* Classeviva::ClassevivaClient::GetName() const {
 	return m_Name.c_str();

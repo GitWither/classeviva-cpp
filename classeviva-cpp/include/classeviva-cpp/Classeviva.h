@@ -15,6 +15,7 @@ namespace Classeviva {
 	constexpr const char* BASE_URL = "https://web.spaggiari.eu";
 
 	constexpr const char* LOGIN_PATH = "/rest/v1/auth/login";
+	constexpr const char* GRADES_PATH = "/rest/v1/grades";
 
 	class ClassevivaClient {
 	private:
@@ -25,6 +26,7 @@ namespace Classeviva {
 		std::string m_Surname;
 
 		std::string m_Token;
+		uint32_t m_Id = 0;
 
 	public:
 		ClassevivaClient(const char*, const char*);
@@ -34,5 +36,7 @@ namespace Classeviva {
 
 		const char* GetName() const;
 		const char* GetSurname() const;
+
+		void GetGrades() const;
 	};
 }
