@@ -8,10 +8,10 @@ set(CV_MAIN "classeviva")
 project("${CV_MAIN}-cpp")
 
 
-add_library("${PROJECT_NAME}" "classeviva-cpp/src/Classeviva.cpp" "classeviva-cpp/include/classeviva-cpp/Classeviva.h")
-add_executable("${CV_MAIN}-test" "classeviva-test/src/Main.cpp")
+add_library("${PROJECT_NAME}" "${PROJECT_NAME}/src/Classeviva.cpp" "${PROJECT_NAME}/include/${PROJECT_NAME}/Classeviva.h")
+add_executable("${CV_MAIN}-test" "${CV_MAIN}-test/src/Main.cpp")
 
-target_include_directories("${PROJECT_NAME}" PUBLIC "classeviva-cpp/include/classeviva-cpp")
+target_include_directories("${PROJECT_NAME}" PUBLIC "${PROJECT_NAME}/include/${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "deps")
 
 add_subdirectory("deps/openssl-cmake")
