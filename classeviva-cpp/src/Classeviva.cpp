@@ -36,7 +36,7 @@ void Classeviva::ClassevivaClient::Login() {
 	}
 }
 
-void Classeviva::ClassevivaClient::GetGrades() const {
+std::shared_ptr<Classeviva::Grade[]> Classeviva::ClassevivaClient::GetGrades() const {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
@@ -46,13 +46,21 @@ void Classeviva::ClassevivaClient::GetGrades() const {
 	};
 	client.set_default_headers(headers);
 
-
 	std::string url = std::string(Classeviva::BASE_API_PATH) + m_Id + std::string(Classeviva::GRADES_PATH);
 	httplib::Result response = client.Get(url.c_str());
 
 	if (response->status == 200) {
-		std::cout << response->body << std::endl;
+		const nlohmann::json response_data = nlohmann::json::parse(response->body);
+
+		const int length = response_data["grades"].size();
+
+		std::unique_ptr<Grade[]> grades(new Grade[length]);
+
+		grades[0] = Grade();
+
+		return grades;
 	}
+	return nullptr;
 }
 
 std::string Classeviva::ClassevivaClient::GetName() const {

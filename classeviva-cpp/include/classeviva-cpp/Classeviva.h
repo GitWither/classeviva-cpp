@@ -3,6 +3,7 @@
 #include "cpp-httplib/httplib.h"
 #include "nlohmann/json.hpp"
 #include <regex>
+#include <array>
 //temp
 #include <iostream>
 
@@ -19,6 +20,22 @@ namespace Classeviva {
 	constexpr const char BASE_API_PATH[] = "/rest/v1/students/";
 
 	constexpr const char GRADES_PATH[] = "/grades";
+
+	struct Grade {
+		const char* subjectDescription;
+		const char* eventDate;
+		double decimalValue;
+		const char* notesForFamily;
+
+	public:
+		Grade() : subjectDescription("sdf"), eventDate("dfsdf"), decimalValue(34.3f), notesForFamily("dfsd") {
+
+		}
+
+		Grade(const Grade& other) : subjectDescription("sdf"), eventDate("dfsdf"), decimalValue(34.3f), notesForFamily("dfsd") {
+
+		}
+	};
 
 	class ClassevivaClient {
 	private:
@@ -40,13 +57,6 @@ namespace Classeviva {
 		std::string GetName() const;
 		std::string GetSurname() const;
 
-		void GetGrades() const;
-	};
-
-	struct Grade {
-		const char* subjectDescription;
-		const char* eventDate;
-		const double decimalValue;
-		const char* notesForFamily;
+		std::shared_ptr<Classeviva::Grade[]> GetGrades() const;
 	};
 }
