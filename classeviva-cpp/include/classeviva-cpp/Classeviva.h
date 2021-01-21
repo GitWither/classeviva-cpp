@@ -25,14 +25,17 @@ namespace Classeviva {
 	struct Grade {
 		const std::string subjectDescription;
 		const std::string eventDate;
-		double decimalValue;
+		const double decimalValue;
 		const std::string notesForFamily;
+		const std::string periodDescription;
+		const std::string gradeType;
 
 	public:
 
-		Grade(std::string& subjectDescription, std::string& eventDate, double& decimalValue, std::string& notesForFamily) :
-			subjectDescription(subjectDescription), eventDate(eventDate), decimalValue(decimalValue), notesForFamily(notesForFamily) {
-			//std::cout << notesForFamily << std::endl;
+		Grade(std::string& subjectDescription, std::string& eventDate, double& decimalValue, std::string& notesForFamily, std::string& periodDesc, std::string& gradeType) :
+			subjectDescription(subjectDescription), eventDate(eventDate), decimalValue(decimalValue), notesForFamily(notesForFamily),
+			periodDescription(periodDesc), gradeType(gradeType)
+		{
 		}
 
 		~Grade() {
@@ -60,6 +63,6 @@ namespace Classeviva {
 		std::string GetName() const;
 		std::string GetSurname() const;
 
-		std::vector<Grade>& GetGrades() const;
+		void GetGrades(std::vector<Classeviva::Grade>&) const;
 	};
 }

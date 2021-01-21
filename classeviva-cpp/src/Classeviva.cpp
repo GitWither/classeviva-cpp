@@ -8,6 +8,9 @@ Classeviva::ClassevivaClient::~ClassevivaClient() {
 
 }
 
+/// <summary>
+/// Logins to Classeviva and sets up the 
+/// </summary>
 void Classeviva::ClassevivaClient::Login() {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
@@ -36,7 +39,11 @@ void Classeviva::ClassevivaClient::Login() {
 	}
 }
 
-std::vector<Classeviva::Grade>& Classeviva::ClassevivaClient::GetGrades() const {
+/// <summary>
+/// Get a list of grades in no particular order
+/// </summary>
+/// <param name="outGrades">The list of grades to fill passed as a reference</param>
+void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
@@ -57,25 +64,26 @@ std::vector<Classeviva::Grade>& Classeviva::ClassevivaClient::GetGrades() const 
 		const int length = gradesDataUnparsed.size();
 		auto grades = gradesDataUnparsed.items();
 
-		static std::vector<Grade> finalGrades;
-		finalGrades.reserve(length);
+		outGrades.reserve(length);
 
 		for (const auto& grade : grades) {
-			auto decimalValueUnparsed = grade.value()["decimalValue"];
+			nlohmann::basic_json<>::value_type value = grade.value();
+
+			//Figure out if the decimal value is null
+			nlohmann::basic_json<>::value_type decimalValueUnparsed = value["decimalValue"];
 			double decVal = decimalValueUnparsed.is_null() ? -1 : decimalValueUnparsed.get<double>();
 
-			finalGrades.emplace_back(
-				grade.value()["subjectDesc"].get<std::string>(), 
-				grade.value()["evtDate"].get<std::string>(), 
-				decVal, 
-				grade.value()["notesForFamily"].get<std::string>()
+			outGrades.emplace_back(
+				value["subjectDesc"].get<std::string>(),
+				value["evtDate"].get<std::string>(),
+				decVal,
+				value["notesForFamily"].get<std::string>(),
+				value["periodDesc"].get<std::string>(),
+				value["componentDesc"].get<std::string>()
 			);
 		}
 
-		return finalGrades;
-
 	}
-	return std::vector<Grade>();
 }
 
 std::string Classeviva::ClassevivaClient::GetName() const {
