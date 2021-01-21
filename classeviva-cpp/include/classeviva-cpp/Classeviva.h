@@ -2,31 +2,34 @@
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "cpp-httplib/httplib.h"
 #include "nlohmann/json.hpp"
+#include <regex>
 //temp
 #include <iostream>
 
 namespace Classeviva {
 
-	constexpr const char* LOGIN_UID = "uid";
-	constexpr const char* LOGIN_PASS = "pass";
+	constexpr const char LOGIN_UID[] = "uid";
+	constexpr const char LOGIN_PASS[] = "pass";
 
-	constexpr const char* RAW_DATA_TYPE = "raw";
+	constexpr const char RAW_DATA_TYPE[] = "raw";
 
-	constexpr const char* BASE_URL = "https://web.spaggiari.eu";
+	constexpr const char BASE_URL[] = "https://web.spaggiari.eu";
 
-	constexpr const char* LOGIN_PATH = "/rest/v1/auth/login";
-	constexpr const char* GRADES_PATH = "/rest/v1/grades";
+	constexpr const char LOGIN_PATH[] = "/rest/v1/auth/login";
+	constexpr const char BASE_API_PATH[] = "/rest/v1/students/";
+
+	constexpr const char GRADES_PATH[] = "/grades";
 
 	class ClassevivaClient {
 	private:
-		const char* m_Password;
-		const char* m_Email;
+		std::string m_Password;
+		std::string m_Email;
 
 		std::string m_Name;
 		std::string m_Surname;
 
 		std::string m_Token;
-		uint32_t m_Id = 0;
+		std::string m_Id;
 
 	public:
 		ClassevivaClient(const char*, const char*);
@@ -34,9 +37,16 @@ namespace Classeviva {
 
 		void Login();
 
-		const char* GetName() const;
-		const char* GetSurname() const;
+		std::string GetName() const;
+		std::string GetSurname() const;
 
 		void GetGrades() const;
+	};
+
+	struct Grade {
+		const char* subjectDescription;
+		const char* eventDate;
+		const double decimalValue;
+		const char* notesForFamily;
 	};
 }

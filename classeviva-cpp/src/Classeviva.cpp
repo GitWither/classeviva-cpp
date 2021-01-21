@@ -32,7 +32,7 @@ void Classeviva::ClassevivaClient::Login() {
 
 		std::string id = response_data["ident"].get<std::string>();
 		id.erase(0, 1).erase(id.end() - 1, id.end());
-		m_Id = std::stoi(id);
+		m_Id = id;
 	}
 }
 
@@ -46,16 +46,19 @@ void Classeviva::ClassevivaClient::GetGrades() const {
 	};
 	client.set_default_headers(headers);
 
-	std::string url = std::string("/rest/v1/students/") + std::to_string(m_Id) + std::string("/grades");
+
+	std::string url = std::string(Classeviva::BASE_API_PATH) + m_Id + std::string(Classeviva::GRADES_PATH);
 	httplib::Result response = client.Get(url.c_str());
 
-	std::cout << response->body << std::endl;
+	if (response->status == 200) {
+		std::cout << response->body << std::endl;
+	}
 }
 
-const char* Classeviva::ClassevivaClient::GetName() const {
-	return m_Name.c_str();
+std::string Classeviva::ClassevivaClient::GetName() const {
+	return m_Name;
 }
 
-const char* Classeviva::ClassevivaClient::GetSurname() const {
-	return m_Surname.c_str();
+std::string Classeviva::ClassevivaClient::GetSurname() const {
+	return m_Surname;
 }
