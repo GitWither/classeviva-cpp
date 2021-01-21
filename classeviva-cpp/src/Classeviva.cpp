@@ -36,7 +36,7 @@ void Classeviva::ClassevivaClient::Login() {
 	}
 }
 
-std::shared_ptr<Classeviva::Grade[]> Classeviva::ClassevivaClient::GetGrades() const {
+std::vector<Classeviva::Grade>& Classeviva::ClassevivaClient::GetGrades() const {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
@@ -51,16 +51,31 @@ std::shared_ptr<Classeviva::Grade[]> Classeviva::ClassevivaClient::GetGrades() c
 
 	if (response->status == 200) {
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
+		
+		auto gradesDataUnparsed = response_data["grades"];
 
-		const int length = response_data["grades"].size();
+		const int length = gradesDataUnparsed.size();
+		auto grades = gradesDataUnparsed.items();
 
-		std::unique_ptr<Grade[]> grades(new Grade[length]);
+		static std::vector<Grade> finalGrades;
+		finalGrades.reserve(length);
 
-		grades[0] = Grade();
+		for (const auto& grade : grades) {
+			auto decimalValueUnparsed = grade.value()["decimalValue"];
+			double decVal = decimalValueUnparsed.is_null() ? -1 : decimalValueUnparsed.get<double>();
 
-		return grades;
+			finalGrades.emplace_back(
+				grade.value()["subjectDesc"].get<std::string>(), 
+				grade.value()["evtDate"].get<std::string>(), 
+				decVal, 
+				grade.value()["notesForFamily"].get<std::string>()
+			);
+		}
+
+		return finalGrades;
+
 	}
-	return nullptr;
+	return std::vector<Grade>();
 }
 
 std::string Classeviva::ClassevivaClient::GetName() const {

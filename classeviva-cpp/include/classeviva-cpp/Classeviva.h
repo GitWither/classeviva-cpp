@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include <regex>
 #include <array>
+#include <vector>
 //temp
 #include <iostream>
 
@@ -22,18 +23,20 @@ namespace Classeviva {
 	constexpr const char GRADES_PATH[] = "/grades";
 
 	struct Grade {
-		const char* subjectDescription;
-		const char* eventDate;
+		const std::string subjectDescription;
+		const std::string eventDate;
 		double decimalValue;
-		const char* notesForFamily;
+		const std::string notesForFamily;
 
 	public:
-		Grade() : subjectDescription("sdf"), eventDate("dfsdf"), decimalValue(34.3f), notesForFamily("dfsd") {
 
+		Grade(std::string& subjectDescription, std::string& eventDate, double& decimalValue, std::string& notesForFamily) :
+			subjectDescription(subjectDescription), eventDate(eventDate), decimalValue(decimalValue), notesForFamily(notesForFamily) {
+			//std::cout << notesForFamily << std::endl;
 		}
 
-		Grade(const Grade& other) : subjectDescription("sdf"), eventDate("dfsdf"), decimalValue(34.3f), notesForFamily("dfsd") {
-
+		~Grade() {
+			std::cout << "destroyed" << std::endl;
 		}
 	};
 
@@ -57,6 +60,6 @@ namespace Classeviva {
 		std::string GetName() const;
 		std::string GetSurname() const;
 
-		std::shared_ptr<Classeviva::Grade[]> GetGrades() const;
+		std::vector<Grade>& GetGrades() const;
 	};
 }
