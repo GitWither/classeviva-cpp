@@ -86,10 +86,18 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	}
 }
 
+/// <summary>
+/// A function that returns the student's name
+/// </summary>
+/// <returns>A string containing the student's name</returns>
 std::string Classeviva::ClassevivaClient::GetName() const {
 	return m_Name;
 }
 
+/// <summary>
+/// A function that returns the student's surname
+/// </summary>
+/// <returns>A string containing the student's surname</returns>
 std::string Classeviva::ClassevivaClient::GetSurname() const {
 	return m_Surname;
 }
