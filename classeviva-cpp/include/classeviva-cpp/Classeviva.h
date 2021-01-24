@@ -32,15 +32,8 @@ namespace Classeviva {
 
 	public:
 
-		Grade(std::string& subjectDescription, std::string& eventDate, double& decimalValue, std::string& notesForFamily, std::string& periodDesc, std::string& gradeType) :
-			subjectDescription(subjectDescription), eventDate(eventDate), decimalValue(decimalValue), notesForFamily(notesForFamily),
-			periodDescription(periodDesc), gradeType(gradeType)
-		{
-		}
-
-		~Grade() {
-			std::cout << "destroyed" << std::endl;
-		}
+		Grade(std::string&, std::string&, double&, std::string&, std::string&, std::string&);
+		~Grade();
 	};
 
 	class ClassevivaClient {

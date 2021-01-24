@@ -1,5 +1,26 @@
 #include "Classeviva.h"
 
+
+Classeviva::Grade::Grade(
+	std::string& subjectDescription, 
+	std::string& eventDate, 
+	double& decimalValue, 
+	std::string& notesForFamily, 
+	std::string& periodDesc, 
+	std::string& gradeType) :
+
+	subjectDescription(subjectDescription), 
+	eventDate(eventDate), 
+	decimalValue(decimalValue), 
+	notesForFamily(notesForFamily),
+	periodDescription(periodDesc), 
+	gradeType(gradeType) {
+}
+
+Classeviva::Grade::~Grade() {
+
+}
+
 Classeviva::ClassevivaClient::ClassevivaClient(const char* email, const char* password) : m_Email(email), m_Password(password) {
 
 }
@@ -33,7 +54,7 @@ void Classeviva::ClassevivaClient::Login() {
 		m_Name = response_data["firstName"].get<std::string>();
 		m_Surname = response_data["lastName"].get<std::string>();
 
-		std::string id = response_data["ident"].get<std::string>();
+		std::string& id = response_data["ident"].get<std::string>();
 		id.erase(0, 1).erase(id.end() - 1, id.end());
 		m_Id = id;
 	}
