@@ -54,7 +54,7 @@ void Classeviva::ClassevivaClient::Login() {
 		m_Name = response_data["firstName"].get<std::string>();
 		m_Surname = response_data["lastName"].get<std::string>();
 
-		std::string& id = response_data["ident"].get<std::string>();
+		std::string id = response_data["ident"].get<std::string>();
 		id.erase(0, 1).erase(id.end() - 1, id.end());
 		m_Id = id;
 	}
@@ -80,7 +80,7 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	if (response->status == 200) {
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
 		
-		auto gradesDataUnparsed = response_data["grades"];
+		auto& gradesDataUnparsed = response_data["grades"];
 
 		const int length = gradesDataUnparsed.size();
 		auto grades = gradesDataUnparsed.items();
