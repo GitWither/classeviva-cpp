@@ -9,9 +9,10 @@ set(CV_MAIN "classeviva")
 # set the project name
 project("${CV_MAIN}-cpp")
 
-
 add_library("${PROJECT_NAME}" "${PROJECT_NAME}/src/Classeviva.cpp" "${PROJECT_NAME}/include/${PROJECT_NAME}/Classeviva.h")
 add_executable("${CV_MAIN}-test" "${CV_MAIN}-test/src/Main.cpp")
+
+target_compile_definitions("${PROJECT_NAME}" PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
 
 target_include_directories("${PROJECT_NAME}" PUBLIC "${PROJECT_NAME}/include/${PROJECT_NAME}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "deps")
