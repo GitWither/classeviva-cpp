@@ -23,7 +23,4 @@ int main() {
 	for (Classeviva::Grade grade : grades) {
 		std::cout << grade.gradeType << std::endl;
 	}
-
-
-	std::cin.get();
 }
