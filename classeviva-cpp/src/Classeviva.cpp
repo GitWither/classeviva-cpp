@@ -1,5 +1,7 @@
 #include "Classeviva.h"
 
+#define ENSURE_SUCCESS_CODE if (response->status != 200) return
+
 
 Classeviva::Grade::Grade(
 	std::string& subjectDescription, 
@@ -45,10 +47,10 @@ void Classeviva::ClassevivaClient::Login() {
 	data[Classeviva::LOGIN_UID] = m_Email;
 	data[Classeviva::LOGIN_PASS] = m_Password;
 
-	httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), Classeviva::RAW_DATA_TYPE);
+	if (httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), Classeviva::RAW_DATA_TYPE)) {
+		ENSURE_SUCCESS_CODE;
 
-	if (response->status == 200) {
-		nlohmann::json response_data = nlohmann::json::parse(response->body);
+		const nlohmann::json response_data = nlohmann::json::parse(response->body);
 
 		m_Token = response_data["token"].get<std::string>();
 		m_Name = response_data["firstName"].get<std::string>();
@@ -75,11 +77,12 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	client.set_default_headers(headers);
 
 	std::string url = std::string(Classeviva::BASE_API_PATH) + m_Id + std::string(Classeviva::GRADES_PATH);
-	httplib::Result response = client.Get(url.c_str());
 
-	if (response->status == 200) {
+	if (httplib::Result response = client.Get(url.c_str())) {
+		ENSURE_SUCCESS_CODE;
+
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
-		
+
 		auto& gradesDataUnparsed = response_data["grades"];
 
 		const int length = gradesDataUnparsed.size();
@@ -103,7 +106,6 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 				value["componentDesc"].get<std::string>()
 			);
 		}
-
 	}
 }
 
@@ -111,7 +113,7 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 /// A function that returns the student's name
 /// </summary>
 /// <returns>A string containing the student's name</returns>
-std::string Classeviva::ClassevivaClient::GetName() const {
+inline std::string Classeviva::ClassevivaClient::GetName() const {
 	return m_Name;
 }
 
@@ -119,6 +121,6 @@ std::string Classeviva::ClassevivaClient::GetName() const {
 /// A function that returns the student's surname
 /// </summary>
 /// <returns>A string containing the student's surname</returns>
-std::string Classeviva::ClassevivaClient::GetSurname() const {
+inline std::string Classeviva::ClassevivaClient::GetSurname() const {
 	return m_Surname;
 }

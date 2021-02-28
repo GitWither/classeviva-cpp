@@ -52,8 +52,8 @@ namespace Classeviva {
 
 		void Login();
 
-		std::string GetName() const;
-		std::string GetSurname() const;
+		inline std::string GetName() const;
+		inline std::string GetSurname() const;
 
 		void GetGrades(std::vector<Classeviva::Grade>&) const;
 	};
