@@ -21,7 +21,7 @@ Classeviva::Grade::~Grade() {
 
 }
 
-Classeviva::ClassevivaClient::ClassevivaClient(const char* email, const char* password) : m_Email(email), m_Password(password) {
+Classeviva::ClassevivaClient::ClassevivaClient(std::string& email, std::string& password) : m_Email(email), m_Password(password) {
 
 }
 

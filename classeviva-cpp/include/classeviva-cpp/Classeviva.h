@@ -48,7 +48,7 @@ namespace Classeviva {
 		std::string m_Id;
 
 	public:
-		ClassevivaClient(const char*, const char*);
+		ClassevivaClient(std::string&, std::string&);
 		~ClassevivaClient();
 
 		void Login();
