@@ -31,7 +31,7 @@ namespace Classeviva {
 
 	public:
 
-		Grade(std::string&, std::string&, double, std::string&, std::string&, std::string&);
+		Grade(const std::string&, const std::string&, const double, const std::string&, const std::string&, const std::string&);
 		~Grade();
 	};
 

@@ -4,12 +4,12 @@
 
 
 Classeviva::Grade::Grade(
-	std::string& subjectDescription, 
-	std::string& eventDate, 
-	double decimalValue, 
-	std::string& notesForFamily, 
-	std::string& periodDesc, 
-	std::string& gradeType) :
+	const std::string& subjectDescription, 
+	const std::string& eventDate, 
+	const double decimalValue, 
+	const std::string& notesForFamily, 
+	const std::string& periodDesc, 
+	const std::string& gradeType) :
 
 	subjectDescription(subjectDescription), 
 	eventDate(eventDate), 
@@ -98,12 +98,12 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 			double decVal = decimalValueUnparsed.is_null() ? -1 : decimalValueUnparsed.get<double>();
 
 			outGrades.emplace_back(
-				static_cast<std::string&>(value["subjectDesc"].get<std::string>()),
-				static_cast<std::string&>(value["evtDate"].get<std::string>()),
+				value["subjectDesc"].get<std::string>(),
+				value["evtDate"].get<std::string>(),
 				decVal,
-				static_cast<std::string&>(value["notesForFamily"].get<std::string>()),
-				static_cast<std::string&>(value["periodDesc"].get<std::string>()),
-				static_cast<std::string&>(value["componentDesc"].get<std::string>())
+				value["notesForFamily"].get<std::string>(),
+				value["periodDesc"].get<std::string>(),
+				value["componentDesc"].get<std::string>()
 			);
 		}
 	}
