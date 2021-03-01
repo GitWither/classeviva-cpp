@@ -50,11 +50,11 @@ namespace Classeviva {
 		ClassevivaClient(std::string&, std::string&);
 		~ClassevivaClient();
 
-		void Login();
+		bool Login();
 
 		inline std::string GetName() const;
 		inline std::string GetSurname() const;
 
-		void GetGrades(std::vector<Classeviva::Grade>&) const;
+		bool GetGrades(std::vector<Classeviva::Grade>&) const;
 	};
 }

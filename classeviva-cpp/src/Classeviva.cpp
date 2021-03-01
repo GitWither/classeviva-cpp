@@ -1,6 +1,6 @@
 #include "Classeviva.h"
 
-#define ENSURE_SUCCESS_CODE if (response->status != 200) return
+#define ENSURE_SUCCESS_CODE if (response->status != 200) return false
 
 
 Classeviva::Grade::Grade(
@@ -34,7 +34,7 @@ Classeviva::ClassevivaClient::~ClassevivaClient() {
 /// <summary>
 /// Logins to Classeviva and sets up the 
 /// </summary>
-void Classeviva::ClassevivaClient::Login() {
+bool Classeviva::ClassevivaClient::Login() {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
@@ -59,14 +59,18 @@ void Classeviva::ClassevivaClient::Login() {
 		std::string id = response_data["ident"].get<std::string>();
 		id.erase(0, 1).erase(id.end() - 1, id.end());
 		m_Id = id;
+
+		return true;
 	}
+
+	return false;
 }
 
 /// <summary>
 /// Get a list of grades in no particular order
 /// </summary>
 /// <param name="outGrades">The list of grades to fill passed as a reference</param>
-void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
+bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
 	httplib::Client client(Classeviva::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
@@ -106,7 +110,11 @@ void Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 				value["componentDesc"].get<std::string>()
 			);
 		}
+
+		return true;
 	}
+
+	return false;
 }
 
 /// <summary>

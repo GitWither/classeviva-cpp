@@ -15,9 +15,13 @@ int main() {
 
     Classeviva::ClassevivaClient client(credentials[0], credentials[1]);
 
-	client.Login();
+	if (!client.Login()) {
+		std::cout << "Something went wrong!" << std::endl;
+	}
 	std::vector<Classeviva::Grade> grades;
-	client.GetGrades(grades);
+	if (!client.GetGrades(grades)) {
+		std::cout << "Could not get grades!" << std::endl;
+	}
 
 	std::cout << grades.size() << std::endl;
 	for (Classeviva::Grade grade : grades) {
