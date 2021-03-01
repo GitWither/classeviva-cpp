@@ -7,14 +7,14 @@ Classeviva::Grade::Grade(
 	const std::string& subjectDescription, 
 	const std::string& eventDate, 
 	const double decimalValue, 
-	const std::string& notesForFamily, 
+	const std::string& notes, 
 	const std::string& periodDesc, 
 	const std::string& gradeType) :
 
 	subjectDescription(subjectDescription), 
 	eventDate(eventDate), 
 	decimalValue(decimalValue), 
-	notesForFamily(notesForFamily),
+	notes(notes),
 	periodDescription(periodDesc), 
 	gradeType(gradeType) {
 }
