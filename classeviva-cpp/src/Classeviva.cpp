@@ -47,7 +47,7 @@ bool Classeviva::ClassevivaClient::Login() {
 	data[Classeviva::LOGIN_UID] = m_Email;
 	data[Classeviva::LOGIN_PASS] = m_Password;
 
-	if (httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), Classeviva::RAW_DATA_TYPE)) {
+	if (httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), "application/json")) {
 		ENSURE_SUCCESS_CODE;
 
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
