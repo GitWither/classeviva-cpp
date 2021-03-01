@@ -17,14 +17,17 @@ int main() {
 
 	if (!client.Login()) {
 		std::cout << "Something went wrong!" << std::endl;
+		return -1;
 	}
 	std::vector<Classeviva::Grade> grades;
 	if (!client.GetGrades(grades)) {
 		std::cout << "Could not get grades!" << std::endl;
+		return -1;
 	}
+
 
 	std::cout << grades.size() << std::endl;
 	for (Classeviva::Grade grade : grades) {
-		std::cout << grade.gradeType << std::endl;
+		std::cout << grade.decimalValue << std::endl;
 	}
 }

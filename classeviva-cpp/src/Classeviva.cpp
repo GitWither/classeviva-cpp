@@ -1,6 +1,6 @@
 #include "Classeviva.h"
 
-#define ENSURE_SUCCESS_CODE if (response->status != 200) return false
+#define ENSURE_SUCCESS_CODE() do {if (response->status != 200) return false;} while(0)
 
 
 Classeviva::Grade::Grade(
@@ -48,7 +48,7 @@ bool Classeviva::ClassevivaClient::Login() {
 	data[Classeviva::LOGIN_PASS] = m_Password;
 
 	if (httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), "application/json")) {
-		ENSURE_SUCCESS_CODE;
+		ENSURE_SUCCESS_CODE();
 
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
 
@@ -83,7 +83,7 @@ bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	std::string url = std::string(Classeviva::BASE_API_PATH) + m_Id + std::string(Classeviva::GRADES_PATH);
 
 	if (httplib::Result response = client.Get(url.c_str())) {
-		ENSURE_SUCCESS_CODE;
+		ENSURE_SUCCESS_CODE();
 
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
 
