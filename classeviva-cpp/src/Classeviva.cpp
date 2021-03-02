@@ -35,7 +35,7 @@ Classeviva::ClassevivaClient::~ClassevivaClient() {
 /// Logins to Classeviva and sets up the 
 /// </summary>
 bool Classeviva::ClassevivaClient::Login() {
-	httplib::Client client(Classeviva::BASE_URL);
+	httplib::Client client(Classeviva::Constants::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
 		{"Z-Dev-Apikey", "+zorro+"},
@@ -44,10 +44,10 @@ bool Classeviva::ClassevivaClient::Login() {
 	client.set_default_headers(headers);
 
 	nlohmann::json data;
-	data[Classeviva::LOGIN_UID] = m_Email;
-	data[Classeviva::LOGIN_PASS] = m_Password;
+	data[Classeviva::Constants::LOGIN_UID] = m_Email;
+	data[Classeviva::Constants::LOGIN_PASS] = m_Password;
 
-	if (httplib::Result response = client.Post(Classeviva::LOGIN_PATH, data.dump(), "application/json")) {
+	if (httplib::Result response = client.Post(Classeviva::Constants::LOGIN_PATH, data.dump(), "application/json")) {
 		ENSURE_SUCCESS_CODE();
 
 		const nlohmann::json response_data = nlohmann::json::parse(response->body);
@@ -71,7 +71,7 @@ bool Classeviva::ClassevivaClient::Login() {
 /// </summary>
 /// <param name="outGrades">The list of grades to fill passed as a reference</param>
 bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
-	httplib::Client client(Classeviva::BASE_URL);
+	httplib::Client client(Classeviva::Constants::BASE_URL);
 	httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
 		{"Z-Dev-Apikey", "+zorro+"},
@@ -80,7 +80,7 @@ bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	};
 	client.set_default_headers(headers);
 
-	std::string url = std::string(Classeviva::BASE_API_PATH) + m_Id + std::string(Classeviva::GRADES_PATH);
+	std::string url = std::string(Classeviva::Constants::BASE_API_PATH) + m_Id + std::string(Classeviva::Constants::GRADES_PATH);
 
 	if (httplib::Result response = client.Get(url.c_str())) {
 		ENSURE_SUCCESS_CODE();
