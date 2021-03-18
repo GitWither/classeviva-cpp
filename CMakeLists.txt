@@ -14,12 +14,11 @@ add_executable("${CV_MAIN}-test" "${CV_MAIN}-test/src/Main.cpp")
 
 target_compile_definitions("${PROJECT_NAME}" PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
 
-target_include_directories("${PROJECT_NAME}" PUBLIC "${PROJECT_NAME}/include/${PROJECT_NAME}")
-target_include_directories("${PROJECT_NAME}" PUBLIC "deps")
+target_include_directories("${PROJECT_NAME}" PRIVATE "${PROJECT_NAME}/include/${PROJECT_NAME}" PUBLIC "${PROJECT_NAME}/include")
 
-add_subdirectory("deps/openssl-cmake")
 add_subdirectory("deps/cpp-httplib")
 add_subdirectory("deps/json")
+add_subdirectory("deps/openssl-cmake")
 
-target_link_libraries("${PROJECT_NAME}" PUBLIC "httplib" "ssl" "crypto" "nlohmann_json::nlohmann_json")
+target_link_libraries("${PROJECT_NAME}" PUBLIC "httplib" "nlohmann_json" "ssl" "crypto")
 target_link_libraries("${CV_MAIN}-test" PRIVATE "${PROJECT_NAME}")

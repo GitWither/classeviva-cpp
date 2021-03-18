@@ -1,6 +1,6 @@
 #pragma once
-#include "cpp-httplib/httplib.h"
-#include "nlohmann/json.hpp"
+#include <httplib.h>
+#include <nlohmann/json.hpp>
 #include <regex>
 #include <array>
 #include <vector>
@@ -29,14 +29,15 @@ namespace Classeviva {
 		const std::string subjectDescription;
 		const std::string eventDate;
 		const double decimalValue;
+		const std::string displayValue;
 		const std::string notes;
 		const std::string periodDescription;
 		const std::string gradeType;
+		const std::string color;
 
 	public:
 
-		Grade(const std::string&, const std::string&, const double, const std::string&, const std::string&, const std::string&);
-		~Grade();
+		Grade(const std::string&, const std::string&, const double, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
 
 	};
 
@@ -52,13 +53,16 @@ namespace Classeviva {
 		std::string m_Id;
 
 	public:
-		ClassevivaClient(std::string&, std::string&);
-		~ClassevivaClient();
+		ClassevivaClient(const std::string&, const std::string&);
 
 		bool Login();
 
-		inline std::string GetName() const;
-		inline std::string GetSurname() const;
+		inline const std::string& GetName() const {
+			return m_Name;
+		}
+		inline const std::string& GetSurname() const {
+			return m_Surname;
+		}
 
 		bool GetGrades(std::vector<Classeviva::Grade>&) const;
 	};

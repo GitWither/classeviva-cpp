@@ -7,36 +7,31 @@ Classeviva::Grade::Grade(
 	const std::string& subjectDescription, 
 	const std::string& eventDate, 
 	const double decimalValue, 
+	const std::string& displayValue,
 	const std::string& notes, 
 	const std::string& periodDesc, 
-	const std::string& gradeType) :
+	const std::string& gradeType,
+	const std::string& color) :
 
 	subjectDescription(subjectDescription), 
 	eventDate(eventDate), 
-	decimalValue(decimalValue), 
+	decimalValue(decimalValue),
+	displayValue(displayValue),
 	notes(notes),
 	periodDescription(periodDesc), 
-	gradeType(gradeType) {
+	gradeType(gradeType),
+	color(color)
+	{
 }
 
-Classeviva::Grade::~Grade() {
-
-}
-
-Classeviva::ClassevivaClient::ClassevivaClient(std::string& email, std::string& password) : m_Email(email), m_Password(password) {
-
-}
-
-Classeviva::ClassevivaClient::~ClassevivaClient() {
-
-}
+Classeviva::ClassevivaClient::ClassevivaClient(const std::string& email, const std::string& password) : m_Email(email), m_Password(password) {}
 
 /// <summary>
 /// Logins to Classeviva and sets up the 
 /// </summary>
 bool Classeviva::ClassevivaClient::Login() {
 	httplib::Client client(Classeviva::Constants::BASE_URL);
-	httplib::Headers headers = {
+	const httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
 		{"Z-Dev-Apikey", "+zorro+"},
 		{"Content-Type", "application/json"}
@@ -72,7 +67,7 @@ bool Classeviva::ClassevivaClient::Login() {
 /// <param name="outGrades">The list of grades to fill passed as a reference</param>
 bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
 	httplib::Client client(Classeviva::Constants::BASE_URL);
-	httplib::Headers headers = {
+	const httplib::Headers headers = {
 		{"User-Agent", "zorro/1.0"},
 		{"Z-Dev-Apikey", "+zorro+"},
 		{"Z-Auth-Token", m_Token},
@@ -80,7 +75,12 @@ bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	};
 	client.set_default_headers(headers);
 
-	std::string url = std::string(Classeviva::Constants::BASE_API_PATH) + m_Id + std::string(Classeviva::Constants::GRADES_PATH);
+	client.set_logger([](const httplib::Request& req, const httplib::Response& res) {
+		std::cout << req.method << std::endl;
+		std::cout << res.status << std::endl;
+	});
+
+	const std::string url = std::string(Classeviva::Constants::BASE_API_PATH) + m_Id + std::string(Classeviva::Constants::GRADES_PATH);
 
 	if (httplib::Result response = client.Get(url.c_str())) {
 		ENSURE_SUCCESS_CODE();
@@ -95,19 +95,21 @@ bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 		outGrades.reserve(length);
 
 		for (const auto& grade : grades) {
-			nlohmann::basic_json<>::value_type value = grade.value();
+			const nlohmann::basic_json<>::value_type value = grade.value();
 
 			//Figure out if the decimal value is null
-			nlohmann::basic_json<>::value_type decimalValueUnparsed = value["decimalValue"];
-			double decVal = decimalValueUnparsed.is_null() ? -1 : decimalValueUnparsed.get<double>();
+			const nlohmann::basic_json<>::value_type decimalValueUnparsed = value["decimalValue"];
+			const double decVal = decimalValueUnparsed.is_null() ? -1 : decimalValueUnparsed.get<double>();
 
 			outGrades.emplace_back(
 				value["subjectDesc"].get<std::string>(),
 				value["evtDate"].get<std::string>(),
 				decVal,
+				value["displayValue"].get<std::string>(),
 				value["notesForFamily"].get<std::string>(),
 				value["periodDesc"].get<std::string>(),
-				value["componentDesc"].get<std::string>()
+				value["componentDesc"].get<std::string>(),
+				value["color"].get<std::string>()
 			);
 		}
 
@@ -115,20 +117,4 @@ bool Classeviva::ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& out
 	}
 
 	return false;
-}
-
-/// <summary>
-/// A function that returns the student's name
-/// </summary>
-/// <returns>A string containing the student's name</returns>
-inline std::string Classeviva::ClassevivaClient::GetName() const {
-	return m_Name;
-}
-
-/// <summary>
-/// A function that returns the student's surname
-/// </summary>
-/// <returns>A string containing the student's surname</returns>
-inline std::string Classeviva::ClassevivaClient::GetSurname() const {
-	return m_Surname;
 }

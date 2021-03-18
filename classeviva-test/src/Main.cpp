@@ -1,4 +1,4 @@
-#include "Classeviva.h"
+#include "classeviva-cpp/Classeviva.h"
 #include <fstream>
 
 int main() {
@@ -28,6 +28,6 @@ int main() {
 
 	std::cout << grades.size() << std::endl;
 	for (Classeviva::Grade grade : grades) {
-		std::cout << grade.decimalValue << std::endl;
+		std::cout << grade.color << std::endl;
 	}
 }
