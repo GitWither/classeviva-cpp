@@ -23,4 +23,3 @@ add_subdirectory("deps/json")
 
 target_link_libraries("${PROJECT_NAME}" PUBLIC "httplib" "ssl" "crypto" "nlohmann_json::nlohmann_json")
 target_link_libraries("${CV_MAIN}-test" PRIVATE "${PROJECT_NAME}")
-target_link_libraries("${CV_MAIN}-test" PRIVATE "httplib" "ssl" "crypto" "nlohmann_json::nlohmann_json")
