@@ -12,6 +12,10 @@ int main() {
 		file >> credentials[0] >> credentials[1];
 		file.close();
 	}
+	else {
+		std::cout << "Could not open file!" << std::endl;
+		return -1;
+	}
 
     Classeviva::ClassevivaClient client(credentials[0], credentials[1]);
 
