@@ -1,5 +1,4 @@
 #pragma once
-#include <httplib.h>
 #include <nlohmann/json.hpp>
 #include <regex>
 #include <array>
@@ -11,16 +10,9 @@
 namespace Classeviva {
 
 	namespace Constants {
-		constexpr const char LOGIN_UID[] = "uid";
-		constexpr const char LOGIN_PASS[] = "pass";
 
-		constexpr const char RAW_DATA_TYPE[] = "raw";
-		constexpr const char APPLICATION_JSON_DATA_TYPE[] = "application/json";
-
-		constexpr const char BASE_URL[] = "https://web.spaggiari.eu";
-
-		constexpr const char LOGIN_PATH[] = "/rest/v1/auth/login";
-		constexpr const char BASE_API_PATH[] = "/rest/v1/students/";
+		constexpr const char LOGIN_PATH[] = "https://web.spaggiari.eu/rest/v1/auth/login";
+		constexpr const char BASE_API_PATH[] = "https://web.spaggiari.eu/rest/v1/students/";
 
 		constexpr const char GRADES_PATH[] = "/grades";
 	}
@@ -41,6 +33,8 @@ namespace Classeviva {
 
 	};
 
+	double GetGradesAverage(const std::vector<Grade>&, const std::string& filter = "");
+
 	class ClassevivaClient {
 	private:
 		std::string m_Password;
@@ -51,6 +45,8 @@ namespace Classeviva {
 
 		std::string m_Token;
 		std::string m_Id;
+
+		std::vector<Grade> m_CachedGrades;
 
 	public:
 		ClassevivaClient(const std::string&, const std::string&);
