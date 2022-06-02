@@ -15,22 +15,129 @@ namespace Classeviva {
 		constexpr const char BASE_API_PATH[] = "https://web.spaggiari.eu/rest/v1/students/";
 
 		constexpr const char GRADES_PATH[] = "/grades";
+		constexpr const char CARDS_PATH[] = "/cards";
 	}
 
+	/// <summary>
+	/// Struct that represents a student's grade
+	/// </summary>
 	struct Grade {
+		/// <summary>
+		/// Name of the subject of the grade
+		/// </summary>
 		const std::string subjectDescription;
+		/// <summary>
+		/// The date on which the grade has been assigned
+		/// </summary>
 		const std::string eventDate;
+		/// <summary>
+		/// Value of the grade represented in numerical form. -1 if grade is not a number
+		/// </summary>
 		const double decimalValue;
+		/// <summary>
+		/// The way the grade is displayed in the register
+		/// </summary>
 		const std::string displayValue;
+		/// <summary>
+		/// Additional notes that describe the grade
+		/// </summary>
 		const std::string notes;
+		/// <summary>
+		/// School period of when the grade was set (semester, pentamester, etc.)
+		/// </summary>
 		const std::string periodDescription;
+		/// <summary>
+		/// Type of the grade (Written, Oral, Etc.)
+		/// </summary>
 		const std::string gradeType;
+		/// <summary>
+		/// Color of the grade
+		/// </summary>
 		const std::string color;
 
 	public:
 
-		Grade(const std::string&, const std::string&, const double, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
+		Grade(
+			const std::string& subjectDescription,
+			const std::string& eventDate,
+			const double decimalValue,
+			const std::string& displayValue,
+			const std::string& notes,
+			const std::string& periodDesc,
+			const std::string& gradeType,
+			const std::string& color
+		) :
+			subjectDescription(subjectDescription),
+			eventDate(eventDate),
+			decimalValue(decimalValue),
+			displayValue(displayValue),
+			notes(notes),
+			periodDescription(periodDesc),
+			gradeType(gradeType),
+			color(color)
+		{
+		}
 
+	};
+
+	struct StudentInfo {
+		std::string birthDate;
+		std::string miurSchoolCode;
+		std::string miurDivisionCode;
+		std::string fiscalCode;
+		std::string schoolCode;
+		std::string schoolName;
+		std::string schoolDedication;
+		std::string schoolCity;
+		std::string schoolProvince;
+
+	public:
+		StudentInfo() {}
+	private:
+		StudentInfo(
+			std::string& birthDate,
+			std::string& miurSchoolCode,
+			std::string& miurDivisionCode,
+			std::string& fiscalCode,
+			std::string& schoolCode,
+			std::string& schoolName,
+			std::string& schoolDedication,
+			std::string& schoolCity,
+			std::string& schoolProvince
+		) : 
+			birthDate(birthDate),
+			miurSchoolCode(miurSchoolCode),
+			miurDivisionCode(miurDivisionCode),
+			fiscalCode(fiscalCode),
+			schoolCode(schoolCode),
+			schoolName(schoolName),
+			schoolDedication(schoolDedication),
+			schoolCity(schoolCity),
+			schoolProvince(schoolProvince)
+		{
+		}
+
+		StudentInfo(StudentInfo&& other) noexcept {
+		}
+
+		StudentInfo& operator=(StudentInfo&& other) noexcept {
+
+			if (this != &other) {
+				birthDate = std::move(other.birthDate);
+				miurSchoolCode = std::move(other.miurSchoolCode);
+				miurDivisionCode = std::move(other.miurDivisionCode);
+				fiscalCode = std::move(other.fiscalCode);
+				schoolCode = std::move(other.schoolCode);
+				schoolName = std::move(other.schoolName);
+				schoolDedication = std::move(other.schoolDedication);
+				schoolCity = std::move(other.schoolCity);
+				schoolProvince = std::move(other.schoolProvince);
+			}
+
+			return *this;
+		}
+
+		friend class ClassevivaClient;
 	};
 
 	double GetGradesAverage(const std::vector<Grade>&, const std::string& filter = "");
@@ -53,6 +160,7 @@ namespace Classeviva {
 
 		bool Login();
 
+
 		inline const std::string& GetName() const {
 			return m_Name;
 		}
@@ -61,5 +169,6 @@ namespace Classeviva {
 		}
 
 		bool GetGrades(std::vector<Classeviva::Grade>&) const;
+		bool GetStudentInfo(StudentInfo& outStudentInfo) const;
 	};
 }

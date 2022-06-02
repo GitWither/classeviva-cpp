@@ -25,7 +25,7 @@ int main() {
 		file.close();
 	}
 	else {
-		std::cout << "Could not open file!" << std::endl;
+		std::cout << "Could not open credentials file!" << std::endl;
 		return -1;
 	}
 
@@ -47,8 +47,25 @@ int main() {
 
 	std::cout << grades.size() << std::endl;
 	for (Classeviva::Grade& grade : grades) {
-		std::cout << grade.subjectDescription << std::endl;
+		std::cout << grade.color << std::endl;
 	}
+
+
+	Classeviva::StudentInfo studentInfo;
+
+	if (!client.GetStudentInfo(studentInfo)) {
+		std::cout << "Could not get school name!" << std::endl;
+	}
+
+	std::cout << "Birth date: " << studentInfo.birthDate << std::endl;
+	std::cout << "Fiscal code: " << studentInfo.fiscalCode << std::endl;
+	std::cout << "MIUR division code: " << studentInfo.miurDivisionCode << std::endl;
+	std::cout << "MIUR school code: " << studentInfo.miurSchoolCode << std::endl;
+	std::cout << "School city: " << studentInfo.schoolCity << std::endl;
+	std::cout << "School code: " << studentInfo.schoolCode << std::endl;
+	std::cout << "School dedication: " << studentInfo.schoolDedication << std::endl;
+	std::cout << "School name: " << studentInfo.schoolName << std::endl;
+	std::cout << "School province: " << studentInfo.schoolProvince << std::endl;
 
 	std::cout << "Grade total average is: " << Classeviva::GetGradesAverage(grades, "LINGUA E CULTURA LATINA") << std::endl;
 	//std::cout << "\a" << std::endl;
