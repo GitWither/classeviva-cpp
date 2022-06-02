@@ -7,14 +7,9 @@ set(CMAKE_COLOR_MAKEFILE   ON)
 
 set(BUILD_SHARED_LIBS OFF CACHE INTERNAL "")
 
-set(JSON_Install ON)
-set(JSON_MultipleHeaders ON)
-
 set(CV_MAIN "classeviva")
 
 project("${CV_MAIN}-cpp")
-
-# add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/deps/openssl-cmake")
 
 if (MSVC)
     # use Windows native SSL instead of OpenSSL or MbedTLS
@@ -25,7 +20,7 @@ else()
     set(ENABLE_PROGRAMS OFF CACHE INTERNAL "")
     set(CURL_USE_MBEDTLS ON CACHE INTERNAL "")
     add_subdirectory(deps/mbedtls EXCLUDE_FROM_ALL)
-    set(MBEDTLS_LIBRARIES "mbedtls")   
+    set(MBEDTLS_LIBRARY "mbedtls")   
 endif()
 
 set(BUILD_TESTING OFF)
@@ -45,6 +40,9 @@ set(CURL_DISABLE_RTSP ON)
 set(CURL_DISABLE_MQTT ON)
 set(CURL_DISABLE_POP3 ON)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/deps/curl")
+
+set(JSON_Install ON)
+set(JSON_MultipleHeaders ON)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/deps/json")
 
 
