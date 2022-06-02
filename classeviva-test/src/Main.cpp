@@ -46,9 +46,10 @@ int main() {
 
 
 	std::cout << grades.size() << std::endl;
-	for (Classeviva::Grade grade : grades) {
+	for (Classeviva::Grade& grade : grades) {
 		std::cout << grade.subjectDescription << std::endl;
 	}
 
 	std::cout << "Grade total average is: " << Classeviva::GetGradesAverage(grades, "LINGUA E CULTURA LATINA") << std::endl;
+	//std::cout << "\a" << std::endl;
 }
