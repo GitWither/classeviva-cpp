@@ -39,7 +39,7 @@ set(CURL_DISABLE_SMTP ON)
 set(CURL_DISABLE_RTSP ON)
 set(CURL_DISABLE_MQTT ON)
 set(CURL_DISABLE_POP3 ON)
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/deps/curl")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/deps/curl" EXCLUDE_FROM_ALL)
 
 set(JSON_Install ON)
 set(JSON_MultipleHeaders ON)
