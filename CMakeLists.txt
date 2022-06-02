@@ -20,7 +20,7 @@ else()
     set(ENABLE_PROGRAMS OFF CACHE INTERNAL "")
     set(CURL_USE_MBEDTLS ON CACHE INTERNAL "")
     add_subdirectory(deps/mbedtls EXCLUDE_FROM_ALL)
-    set(MBEDTLS_LIBRARY "mbedtls")   
+    set(MBEDTLS_LIBRARIES "mbedtls")   
 endif()
 
 set(BUILD_TESTING OFF)
