@@ -45,10 +45,18 @@ int main() {
 	}
 
 
-	std::cout << grades.size() << std::endl;
+	std::cout << "Grades count: " << grades.size() << std::endl;
 	for (Classeviva::Grade& grade : grades) {
-		std::cout << grade.color << std::endl;
+		std::cout << grade.color <<  " ";
 	}
+	std::cout << std::endl;
+
+	std::vector<Classeviva::Document> documents;
+	if (!client.GetDocuments(documents)) {
+
+	}
+
+	std::cout << "Document count: " << documents.size() << std::endl;
 
 
 	Classeviva::StudentInfo studentInfo;
@@ -69,4 +77,5 @@ int main() {
 
 	std::cout << "Grade total average is: " << Classeviva::GetGradesAverage(grades, "LINGUA E CULTURA LATINA") << std::endl;
 	//std::cout << "\a" << std::endl;
+
 }

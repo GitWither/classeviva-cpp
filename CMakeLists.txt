@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -56,3 +58,4 @@ target_link_libraries("${PROJECT_NAME}" PRIVATE "CURL::libcurl" "nlohmann_json")
 
 add_executable("${CV_MAIN}-test" "${CV_MAIN}-test/src/Main.cpp")
 target_link_libraries("${CV_MAIN}-test" PRIVATE "${PROJECT_NAME}")
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT "${CV_MAIN}-test")

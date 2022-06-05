@@ -16,6 +16,7 @@ namespace Classeviva {
 
 		constexpr const char GRADES_PATH[] = "/grades";
 		constexpr const char CARDS_PATH[] = "/cards";
+		constexpr const char NOTICEBOARD_PATH[] = "/noticeboard";
 	}
 
 	/// <summary>
@@ -78,6 +79,23 @@ namespace Classeviva {
 		{
 		}
 
+	};
+
+	struct Document {
+		const int publicationId;
+		const int contentId;
+		const bool isDateValid;
+		const bool wasRead;
+		const bool hasChanged;
+		const bool hasAttachments;
+		const bool needsJoining;
+		const bool needReply;
+		const bool needSignature;
+
+		const std::string publicationDate;
+		const std::string status;
+		const std::string title;
+		const std::string category;
 	};
 
 	struct StudentInfo {
@@ -168,7 +186,20 @@ namespace Classeviva {
 			return m_Surname;
 		}
 
-		bool GetGrades(std::vector<Classeviva::Grade>&) const;
+		/// <summary>
+		/// Get a list of grades in no particular order
+		/// </summary>
+		/// <param name="outGrades">The resulting vector of Grades that has to be filled</param>
+		/// <returns>True if the operation succeeded</returns>
+		bool GetGrades(std::vector<Grade>& outGrades) const;
+
+		/// <summary>
+		/// Get all kinds of information about a student
+		/// </summary>
+		/// <param name="outStudentInfo">The resulting StudentInfo struct</param>
+		/// <returns>True if the operation succeeded</returns>
 		bool GetStudentInfo(StudentInfo& outStudentInfo) const;
+
+		bool GetDocuments(std::vector<Document>& outDocuments) const;
 	};
 }

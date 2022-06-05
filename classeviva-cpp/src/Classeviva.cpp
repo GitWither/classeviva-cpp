@@ -155,10 +155,6 @@ namespace Classeviva {
 		return false;
 	}
 
-	/// <summary>
-	/// Get a list of grades in no particular order
-	/// </summary>
-	/// <param name="outGrades">The list of grades to fill passed as a reference</param>
 	bool ClassevivaClient::GetGrades(std::vector<Classeviva::Grade>& outGrades) const {
 		CURL* curl = curl_easy_init();
 		CURLcode response;
@@ -226,4 +222,59 @@ namespace Classeviva {
 		return false;
 	}
 
+	bool ClassevivaClient::GetDocuments(std::vector<Document>& outDocuments) const {
+		CURL* curl = curl_easy_init();
+		CURLcode response;
+
+		if (!curl) return false;
+
+		curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
+		curl_easy_setopt(curl, CURLOPT_URL, (Constants::BASE_API_PATH + m_Id + Constants::NOTICEBOARD_PATH).c_str());
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+		curl_easy_setopt(curl, CURLOPT_DEFAULT_PROTOCOL, "https");
+
+		struct curl_slist* headers = NULL;
+		headers = curl_slist_append(headers, "User-Agent: zorro/1.0");
+		headers = curl_slist_append(headers, "Z-Dev-Apikey: +zorro+");
+		headers = curl_slist_append(headers, "Content-Type: application/json");
+		headers = curl_slist_append(headers, (std::string("Z-Auth-Token:") + m_Token).c_str());
+
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+		std::string responseString;
+
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteFunction);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
+
+		response = curl_easy_perform(curl);
+
+
+		long responseCode = 0;
+		curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode);
+
+		if (responseCode == SUCCESS_CODE) {
+			const nlohmann::json response_data = nlohmann::json::parse(responseString);
+
+			auto& documentsDataUnparsed = response_data["items"];
+
+			const size_t length = documentsDataUnparsed.size();
+			auto grades = documentsDataUnparsed.items();
+
+			std::cout << responseString << std::endl;
+
+			outDocuments.reserve(length);
+
+			for (const auto& grade : grades) {
+				const nlohmann::basic_json<>::value_type value = grade.value();
+
+				outDocuments.emplace_back();
+			}
+
+			return true;
+		}
+
+		curl_easy_cleanup(curl);
+
+		return false;
+	}
 }
