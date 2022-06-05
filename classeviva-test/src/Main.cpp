@@ -53,10 +53,14 @@ int main() {
 
 	std::vector<Classeviva::Document> documents;
 	if (!client.GetDocuments(documents)) {
-
+		std::cout << "Could not get documents!" << std::endl;
 	}
 
 	std::cout << "Document count: " << documents.size() << std::endl;
+	for (Classeviva::Document& doc : documents) {
+		std::cout << doc.category << " ";
+	}
+	std::cout << std::endl;
 
 
 	Classeviva::StudentInfo studentInfo;

@@ -258,16 +258,29 @@ namespace Classeviva {
 			auto& documentsDataUnparsed = response_data["items"];
 
 			const size_t length = documentsDataUnparsed.size();
-			auto grades = documentsDataUnparsed.items();
-
-			std::cout << responseString << std::endl;
+			auto documents = documentsDataUnparsed.items();
 
 			outDocuments.reserve(length);
 
-			for (const auto& grade : grades) {
-				const nlohmann::basic_json<>::value_type value = grade.value();
+			for (const auto& document : documents) {
+				const nlohmann::basic_json<>::value_type value = document.value();
 
-				outDocuments.emplace_back();
+				//outDocuments.emplace_back();
+				outDocuments.emplace_back(
+					value["pubId"].get<int>(),
+					value["cntId"].get<int>(),
+					value["cntValidInRange"].get<bool>(),
+					value["readStatus"].get<bool>(),
+					value["cntHasChanged"].get<bool>(),
+					value["cntHasAttach"].get<bool>(),
+					value["needJoin"].get<bool>(),
+					value["needReply"].get<bool>(),
+					value["needSign"].get<bool>(),
+					value["pubDT"].get<std::string>(),
+					value["cntStatus"].get<std::string>(),
+					value["cntTitle"].get<std::string>(),
+					value["cntCategory"].get<std::string>()
+				);
 			}
 
 			return true;

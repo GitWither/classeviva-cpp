@@ -82,20 +82,42 @@ namespace Classeviva {
 	};
 
 	struct Document {
-		const int publicationId;
-		const int contentId;
-		const bool isDateValid;
-		const bool wasRead;
-		const bool hasChanged;
-		const bool hasAttachments;
-		const bool needsJoining;
-		const bool needReply;
-		const bool needSignature;
+		const int publicationId, contentId;
+		const bool isDateValid, wasRead, hasChanged, hasAttachments, needsJoining, needsReply, needsSignature;
 
-		const std::string publicationDate;
-		const std::string status;
-		const std::string title;
-		const std::string category;
+		const std::string publicationDate, status, title, category;
+
+		Document(
+			const int publicationId,
+			const int contentId,
+			const bool isDateValid,
+			const bool wasRead,
+			const bool hasChanged,
+			const bool hasAttachments,
+			const bool needsJoining,
+			const bool needsReply,
+			const bool needsSignature,
+
+			const std::string& publicationDate,
+			const std::string& status,
+			const std::string& title,
+			const std::string& category
+		) 
+			: 
+			publicationId(publicationId),
+			contentId(contentId),
+			isDateValid(isDateValid),
+			wasRead(wasRead),
+			hasChanged(hasChanged),
+			hasAttachments(hasAttachments),
+			needsJoining(needsJoining),
+			needsReply(needsReply),
+			needsSignature(needsSignature),
+			publicationDate(publicationDate),
+			status(status),
+			title(title),
+			category(category)
+		{}
 	};
 
 	struct StudentInfo {
